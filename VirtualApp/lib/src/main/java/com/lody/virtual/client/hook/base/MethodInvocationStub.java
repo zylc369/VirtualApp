@@ -45,6 +45,7 @@ public class MethodInvocationStub<T> {
         this.mBaseInterface = baseInterface;
         if (baseInterface != null) {
             if (proxyInterfaces == null) {
+                // 获得类实现(implements)的所有接口
                 proxyInterfaces = MethodParameterUtils.getAllInterface(baseInterface.getClass());
             }
             mProxyInterface = (T) Proxy.newProxyInstance(baseInterface.getClass().getClassLoader(), proxyInterfaces, new HookInvocationHandler());
@@ -164,9 +165,18 @@ public class MethodInvocationStub<T> {
     }
 
     private class HookInvocationHandler implements InvocationHandler {
+
+        /**
+         * HOOK调用处理方法
+         * @param proxy 对象
+         * @param method 调用的方法
+         * @param args 传入方法的参数
+         * @return 返回调用结果
+         * @throws Throwable 当运行处异常时则抛出
+         */
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            MethodProxy methodProxy = getMethodProxy(method.getName());
+            MethodProxy methodProxy = getMethodProxy(method.getName()); // 通过方法名获得代理方法
             boolean useProxy = (methodProxy != null && methodProxy.isEnable());
             boolean mightLog = (mInvocationLoggingCondition != LogInvocation.Condition.NEVER) ||
                     (methodProxy != null && methodProxy.getInvocationLoggingCondition() != LogInvocation.Condition.NEVER);
@@ -182,6 +192,7 @@ public class MethodInvocationStub<T> {
 
 
             try {
+                // 调用原方法，在调用原方法之前和之后调用了beforeCall和afterCall
                 if (useProxy && methodProxy.beforeCall(mBaseInterface, method, args)) {
                     res = methodProxy.call(mBaseInterface, method, args);
                     res = methodProxy.afterCall(mBaseInterface, method, args, res);

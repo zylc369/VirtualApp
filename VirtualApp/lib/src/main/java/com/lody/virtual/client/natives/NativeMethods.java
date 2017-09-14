@@ -20,6 +20,11 @@ public class NativeMethods {
 
     public static Method gAudioRecordNativeCheckPermission;
 
+    /**
+     * 初始化
+     *
+     * 方法内获得了一些方法的方法对象
+     */
     public static void init() {
         String methodName =
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ? "openDexFileNative" : "openDexFile";

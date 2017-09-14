@@ -305,6 +305,7 @@ public class VActivityManager {
 
     public boolean isAppProcess(String processName) {
         try {
+            // getService()获得的是VActivityManagerService对象
             return getService().isAppProcess(processName);
         } catch (RemoteException e) {
             return VirtualRuntime.crash(e);
@@ -391,6 +392,10 @@ public class VActivityManager {
         }
     }
 
+    /**
+     * 获得系统PID
+     * @return 返回系统PID
+     */
     public int getSystemPid() {
         try {
             return getService().getSystemPid();

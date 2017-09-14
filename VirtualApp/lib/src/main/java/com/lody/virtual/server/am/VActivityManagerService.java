@@ -172,6 +172,13 @@ public class VActivityManagerService extends IActivityManager.Stub {
         mPendingIntents.removePendingIntent(binder);
     }
 
+    /**
+     * 获得系统PID
+     *
+     * 实际上获得的是主机的UID
+     *
+     * @return 返回系统PID
+     */
     @Override
     public int getSystemPid() {
         return VirtualCore.get().myUid();
@@ -654,6 +661,11 @@ public class VActivityManagerService extends IActivityManager.Stub {
         }
     }
 
+    /**
+     * 根据进程名解析进程PID
+     * @param stubProcessName 进程名
+     * @return 如果是app客户端进程，则返回PID；否则返回-1。
+     */
     private int parseVPid(String stubProcessName) {
         String prefix = VirtualCore.get().getHostPkg() + ":p";
         if (stubProcessName != null && stubProcessName.startsWith(prefix)) {
@@ -834,6 +846,11 @@ public class VActivityManagerService extends IActivityManager.Stub {
         return -1;
     }
 
+    /**
+     * 用于判断是否是APP客户端进程
+     * @param processName 进程名
+     * @return APP客户端进程，则返回true；否则，返回false。
+     */
     @Override
     public boolean isAppProcess(String processName) {
         return parseVPid(processName) != -1;

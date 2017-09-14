@@ -7,6 +7,9 @@ import java.util.HashMap;
 
 public final class RefClass {
 
+    /**
+     * 引用类型的键值对
+     */
     private static HashMap<Class<?>,Constructor<?>> REF_TYPES = new HashMap<Class<?>, Constructor<?>>();
     static {
         try {
@@ -27,6 +30,12 @@ public final class RefClass {
         }
     }
 
+    /**
+     * 加载类，并且初始化映射类中的字段
+     * @param mappingClass 映射的类
+     * @param className 原类的类名
+     * @return 返回原类的类对象
+     */
     public static Class<?> load(Class<?> mappingClass, String className) {
         try {
             return load(mappingClass, Class.forName(className));

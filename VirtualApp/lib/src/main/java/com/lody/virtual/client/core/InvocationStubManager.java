@@ -104,16 +104,25 @@ public final class InvocationStubManager {
 
 	}
 
+	/**
+	 * 向注入器添加对操作系统的内部注入对象
+	 * @throws Throwable 出现异常则抛出
+	 */
 	private void injectInternal() throws Throwable {
 		if (VirtualCore.get().isMainProcess()) {
+			// 主机的主进程，则不做任何事情
 			return;
 		}
 		if (VirtualCore.get().isServerProcess()) {
+			// 主机的服务进程，添加下面的注入
+
 			addInjector(new ActivityManagerStub());
 			addInjector(new PackageManagerStub());
 			return;
 		}
 		if (VirtualCore.get().isVAppProcess()) {
+			// 客户机的APP进程，添加下面注入
+
 			addInjector(new LibCoreStub());
 			addInjector(new ActivityManagerStub());
 			addInjector(new PackageManagerStub());

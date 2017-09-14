@@ -31,6 +31,8 @@ public class LibCoreStub extends MethodInvocationProxy<MethodInvocationStub<Obje
 
     @Override
     protected void onBindMethods() {
+        // 父类的构造函数中调用了onBindMethods方法，所以流程将进入当前类的onBindMethods方法
+
         super.onBindMethods();
         addMethodProxy(new ReplaceUidMethodProxy("chown", 1));
         addMethodProxy(new ReplaceUidMethodProxy("fchown", 1));
@@ -41,6 +43,7 @@ public class LibCoreStub extends MethodInvocationProxy<MethodInvocationStub<Obje
 
     @Override
     public void inject() throws Throwable {
+        // getInvocationStub().getProxyInterface()返回的是代理对象，代理对象也可以理解为HOOK对象
         Libcore.os.set(getInvocationStub().getProxyInterface());
     }
 

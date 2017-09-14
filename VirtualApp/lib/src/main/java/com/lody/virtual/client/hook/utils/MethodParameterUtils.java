@@ -45,6 +45,11 @@ public class MethodParameterUtils {
 		return null;
 	}
 
+	/**
+	 * 获得类实现(implements)的所有接口
+	 * @param clazz 类对象
+	 * @return 返回查到的接口类对象数组
+	 */
 	public static Class<?>[] getAllInterface(Class clazz){
 		HashSet<Class<?>> classes = new HashSet<>();
 		getAllInterfaces(clazz,classes);
@@ -54,6 +59,11 @@ public class MethodParameterUtils {
 	}
 
 
+	/**
+	 * 获得类实现(implements)的所有接口
+	 * @param clazz 类对象
+	 * @param interfaceCollection 将查到的接口存放到该对象中
+	 */
 	public static void getAllInterfaces(Class clazz, HashSet<Class<?>> interfaceCollection) {
 		Class<?>[] classes = clazz.getInterfaces();
 		if (classes.length != 0) {

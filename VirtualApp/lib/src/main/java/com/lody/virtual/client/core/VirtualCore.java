@@ -207,6 +207,7 @@ public final class VirtualCore {
     }
 
     public String getEngineProcessName() {
+        // BinderProvider它新启动了一个进程以 :x 为后缀
         return context.getString(R.string.engine_process_name);
     }
 
@@ -230,6 +231,9 @@ public final class VirtualCore {
         }
     }
 
+    /**
+     * 检测进程类型
+     */
     private void detectProcessType() {
         // Host package name
         hostPkgName = context.getApplicationInfo().packageName;
@@ -238,14 +242,15 @@ public final class VirtualCore {
         // Current process name
         processName = ActivityThread.getProcessName.call(mainThread);
         if (processName.equals(mainProcessName)) {
-            processType = ProcessType.Main;
+            processType = ProcessType.Main;         // 主进程
         } else if (processName.endsWith(Constants.SERVER_PROCESS_NAME)) {
-            processType = ProcessType.Server;
+            processType = ProcessType.Server;       // 主进程的服务进程
         } else if (VActivityManager.get().isAppProcess(processName)) {
-            processType = ProcessType.VAppClient;
+            processType = ProcessType.VAppClient;   // app客户端进程
         } else {
-            processType = ProcessType.CHILD;
+            processType = ProcessType.CHILD;        // 子进程
         }
+        // 如果是APP客户端进程(ProcessType.VAppClient)，则设置systemPid成员变量
         if (isVAppProcess()) {
             systemPid = VActivityManager.get().getSystemPid();
         }
